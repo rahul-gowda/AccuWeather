@@ -1,4 +1,5 @@
-﻿using AccuWeather.Utilities;
+﻿using AccuWeather.Controller;
+using AccuWeather.Utilities;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -44,13 +45,16 @@ namespace AccuWeather.Pages
         public HomePage CompareTemperature() 
         {
             string UItemp = GetCurrentTempFromUI();
-            string ApiTemp = GetCurrentTempFromAPI();
+            string currentLoc = CityHeader.Text.Replace(" ", "");
+            string ApiTemp = GetCurrentTempFromAPI(currentLoc);
             return new HomePage(driver);
         }
 
-        private string GetCurrentTempFromAPI()
+        private string GetCurrentTempFromAPI(string currentLoc)
         {
-            throw new NotImplementedException();
+            ControllerActions controllerActions = new ControllerActions();
+            var t = controllerActions.GetWeatherBasedOnCity(currentLoc);
+            return t.Content;
         }
 
         private string GetCurrentTempFromUI()
