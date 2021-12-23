@@ -30,5 +30,10 @@ namespace AccuWeather
             WorkFlow workflow = new WorkFlow(driver);
             workflow.CompareTemperature("Bengaluru");
         }
+        [TearDown]
+        public void TearDown()
+        {
+            driver.Close();
+        }
     }
 }

@@ -28,12 +28,12 @@ namespace AccuWeather.Workflow
             double tempFromApi = weatherResponse.Main.Temp;
             CompareDifferenceInTemp(tempFromUi, tempFromApi);
         }
-        public bool CompareDifferenceInTemp(double tempFromUi, double tempFromApi)
+        public bool CompareDifferenceInTemp(double tempFromUi, double tempFromApi, int variance=1)
         {
             //try
             //{
             var t = Math.Abs(tempFromUi - tempFromApi);
-            if (t > 1)
+            if (t > variance)
             {
                 throw new TemperatureDifferenceException(Math.Abs(tempFromUi - tempFromApi).ToString());
             }
