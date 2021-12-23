@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/AccuWeather
+/AccuWeather/.vs/AccuWeather/v16
+/AccuWeather/obj
