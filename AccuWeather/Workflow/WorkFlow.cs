@@ -1,5 +1,8 @@
-﻿using AccuWeather.Pages;
+﻿using AccuWeather.Controller;
+using AccuWeather.Models;
+using AccuWeather.Pages;
 using AccuWeather.Utilities;
+using Newtonsoft.Json;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -20,8 +23,17 @@ namespace AccuWeather.Workflow
 
         public void CompareTemperature()
         {
-
             HomePage hp = new HomePage(driver);
+            string currentLoc = hp.NavigateToHomePage().SearchDesiredCity("Bengaluru").GetCurrentLocFromUI();
+            double currentTempUi = hp.GetCurrentTempFromUI();
+            ControllerActions controllerActions = new ControllerActions();
+            var t = controllerActions.GetWeatherBasedOnCity(currentLoc);
+            WeatherResponseModel weatherResponse = JsonConvert.DeserializeObject<WeatherResponseModel>(controllerActions.GetWeatherBasedOnCity(currentLoc).Content);
+            double tempFromApi = weatherResponse.Main.Temp;
+        }
+        public decimal CompareDifferenceInTemp(decimal tempFromUi, decimal tempFromApi)
+        {
+            return Math.Abs(tempFromUi - tempFromApi);
         }
     }
 }

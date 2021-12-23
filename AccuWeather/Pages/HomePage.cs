@@ -44,7 +44,7 @@ namespace AccuWeather.Pages
 
         public HomePage CompareTemperature() 
         {
-            string UItemp = GetCurrentTempFromUI();
+            double UItemp = GetCurrentTempFromUI();
             string currentLoc = CityHeader.Text.Replace(" ", "");
             string ApiTemp = GetCurrentTempFromAPI(currentLoc);
             return new HomePage(driver);
@@ -57,10 +57,14 @@ namespace AccuWeather.Pages
             return t.Content;
         }
 
-        private string GetCurrentTempFromUI()
+        public string GetCurrentLocFromUI()
+        {           
+            return CityHeader.Text.Replace(" ","").Trim();
+        }
+        public double GetCurrentTempFromUI()
         {
-            Int32.TryParse(CityTemp.Text, out int temp);
-            return temp.ToString();
+            Double.TryParse(CityTemp.Text, out double temp);
+            return temp;
         }
     }
 }
