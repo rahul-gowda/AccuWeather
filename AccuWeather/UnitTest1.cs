@@ -19,7 +19,6 @@ namespace AccuWeather
             chromeOptions.AddUserProfilePreference("intl.accept_languages", "nl");
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
             chromeOptions.AddUserProfilePreference("safebrowsing.enabled", "false");
-            //var test = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             driver = new ChromeDriver(chromeOptions);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
             driver.Manage().Window.Maximize();
@@ -29,8 +28,7 @@ namespace AccuWeather
         public void Test1()
         {
             WorkFlow workflow = new WorkFlow(driver);
-            workflow.CompareTemperature();
-            Assert.Pass();
+            workflow.CompareTemperature("Bengaluru");
         }
     }
 }

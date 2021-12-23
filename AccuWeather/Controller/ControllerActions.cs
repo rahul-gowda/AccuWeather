@@ -9,7 +9,7 @@ namespace AccuWeather.Controller
 {
     public class ControllerActions
     {
-        public string baseUrl = "api.openweathermap.org/data/2.5/weather";
+        public string baseUrl = "https://api.openweathermap.org/data/2.5/weather";
         public string appID = "7fe67bf08c80ded756e598d6f8fedaea";
         #region Controller Action Methods
 

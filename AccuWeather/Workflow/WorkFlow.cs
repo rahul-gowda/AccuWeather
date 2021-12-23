@@ -1,18 +1,14 @@
 ﻿using AccuWeather.Controller;
+using AccuWeather.Helper;
 using AccuWeather.Models;
 using AccuWeather.Pages;
-using AccuWeather.Utilities;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AccuWeather.Workflow
 {
-    class WorkFlow
+    public class WorkFlow
     {
         public WorkFlow(IWebDriver driver)
         {
@@ -21,19 +17,33 @@ namespace AccuWeather.Workflow
 
         public IWebDriver driver { get; }
 
-        public void CompareTemperature()
+        public void CompareTemperature(string desiredCity)
         {
             HomePage hp = new HomePage(driver);
-            string currentLoc = hp.NavigateToHomePage().SearchDesiredCity("Bengaluru").GetCurrentLocFromUI();
-            double currentTempUi = hp.GetCurrentTempFromUI();
+            string currentLoc = hp.NavigateToHomePage().SearchDesiredCity(desiredCity).GetCurrentLocFromUI();
+            double tempFromUi = hp.GetCurrentTempFromUI();
             ControllerActions controllerActions = new ControllerActions();
             var t = controllerActions.GetWeatherBasedOnCity(currentLoc);
             WeatherResponseModel weatherResponse = JsonConvert.DeserializeObject<WeatherResponseModel>(controllerActions.GetWeatherBasedOnCity(currentLoc).Content);
             double tempFromApi = weatherResponse.Main.Temp;
+            CompareDifferenceInTemp(tempFromUi, tempFromApi);
         }
-        public decimal CompareDifferenceInTemp(decimal tempFromUi, decimal tempFromApi)
+        public bool CompareDifferenceInTemp(double tempFromUi, double tempFromApi)
         {
-            return Math.Abs(tempFromUi - tempFromApi);
+            //try
+            //{
+            var t = Math.Abs(tempFromUi - tempFromApi);
+            if (t > 1)
+            {
+                throw new TemperatureDifferenceException(Math.Abs(tempFromUi - tempFromApi).ToString());
+            }
+            //}
+            //catch (TemperatureDifferenceException ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //    return false;
+            //}
+            return true;
         }
     }
 }

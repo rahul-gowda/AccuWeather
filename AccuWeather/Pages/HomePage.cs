@@ -39,6 +39,18 @@ namespace AccuWeather.Pages
             driver.WaitForPageLoad(TimeSpan.FromSeconds(5));
             driver.FindElement(By.XPath(@$"//a[contains(.,'{cityName}')]")).Click();
             driver.WaitForPageLoad(TimeSpan.FromSeconds(5));
+            //driver.SkipAlertIfAny();
+
+            try
+            {
+                driver.SwitchTo().ParentFrame();
+                driver.SwitchTo().Frame(driver.FindElement(By.Id("google_ads_iframe_/6581/web/in/interstitial/admin/search_0")));
+                driver.FindElement(By.Id("dismiss-button")).Click();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("No ads frame to close");
+            }
             return new HomePage(driver);
         }
 
@@ -63,7 +75,8 @@ namespace AccuWeather.Pages
         }
         public double GetCurrentTempFromUI()
         {
-            Double.TryParse(CityTemp.Text, out double temp);
+            var t = CityTemp.Text;
+            Double.TryParse(CityTemp.Text.Split("°")[0], out double temp);
             return temp;
         }
     }
