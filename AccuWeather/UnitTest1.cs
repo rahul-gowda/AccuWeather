@@ -6,6 +6,7 @@ using System;
 
 namespace AccuWeather
 {
+    [TestFixture]
     public class Tests
     {
         public IWebDriver driver { get; private set; }
@@ -24,11 +25,14 @@ namespace AccuWeather
             driver.Manage().Window.Maximize();
         }
 
-        [Test]
-        public void Test1()
+
+        [TestCase("Bengaluru", TestName = "Compare temperature for Bengaluru")]
+        [TestCase("Mysore", TestName = "Compare temperature for Mysore")]
+        [TestCase("London", TestName = "Compare temperature for London")]
+        public void Test1(string city)
         {
             WorkFlow workflow = new WorkFlow(driver);
-            workflow.CompareTemperature("Bengaluru");
+            workflow.CompareTemperature(city);
         }
         [TearDown]
         public void TearDown()
